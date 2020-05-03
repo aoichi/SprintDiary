@@ -1,0 +1,57 @@
+{% load static %}
+{% load diary %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>{% block meta_title %}Diary{% endblock %}</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'materialize/css/materialize.min.css' %}" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'diary/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <meta name="description" content="{% block meta_description %}UTProjectSprint dialy_project{% endblock %}">
+</head>
+
+
+<body>
+  <ul id="dropdown1" class="dropdown-content">
+    {% render_category_links %}
+  </ul>
+  <nav>
+    <div class="nav-wrapper blue">
+      <a href="#!" class="brand-logo"><i class="material-icons">book</i>Diary</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#MyDiary">MyDiary</a></li>
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="#Recommend">Recommend</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="#">Menu</a></li>
+  </ul>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="page-footer blue">
+  <div class="footer-copyright">
+    <div class="container">
+    Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+    </div>
+  </div>
+</footer>
+
+<!--JavaScript at end of body for optimized loading-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+<script src="{% static 'materialize/js/init.js' %}"></script>
+<script src="{% static 'diary/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "diary/base.html" %}
+
+{% block meta_title %}{{ heading }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section id="diary-list" class="container">
+  <div class="row">
+    {% for diary in object_list %}
+      <div class="col s12">
+        <a href="{% url 'diary:detail' diary.pk %}">
+        <div class="card-panel hoverable">
+          <div class="icon-block">
+            <h5 class="center">{{ diary.title }}</h5>
+            <h6 class="center light-blue-text">{{ diary.category }}</h6>
+            <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
+            <p class="contents">
+              {{ diary.text | truncatechars:100 }}
+            </p>
+          </div>
+        </div>
+        </a>
+      </div>
+
+    {% empty %}
+        <p>記事が見つかりませんでした。</p>
+    {% endfor %}
+  </div>
+  <br><br>
+
+</section>
+
+{% endblock %}
