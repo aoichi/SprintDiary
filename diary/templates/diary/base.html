@@ -1,0 +1,92 @@
+{% load static %}
+{% load diary %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>{% block meta_title %}Diary{% endblock %}</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'materialize/css/materialize.min.css' %}" rel="stylesheet" media="screen,projection"/>
+  <link href="{% static 'diary/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <meta name="description" content="{% block meta_description %}UTProjectSprint dialy_project{% endblock %}">
+</head>
+
+
+<body>
+<header>
+  <nav>
+  	<div class="nav-wrapper blue">
+  		<div class="row">
+  			<div class="col s12">
+  				<a href="#" data-target="sidenav-2" class="left sidenav-trigger show-on-medium-and-up"><i class="material-icons">menu</i></a>
+  			  <a href="#!" class="brand-logo center"><i class="material-icons">book</i>Diary</a>
+          <ul class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+            <li><a class="waves-effect waves-light btn" href="{% url 'diary:logout' %}">Log out</a></li>
+            {% else %}
+            <li><a class="waves-effect waves-light btn" href="{% url 'diary:signup' %}">Sign up</a></li>
+            <li><a class="waves-effect waves-light btn" href="{% url 'diary:login' %}">Log in</a></li>
+            {% endif %}
+          </ul>
+  			</div>
+  		</div>
+		</div>
+  </nav>
+</header>
+
+<!--デスクトップ用-->
+<ul id="sidenav-2" class="sidenav">
+    <li><div class="user-view">
+      <div class="background blue">
+      </div>
+      <a href="#user"><i class="material-icons white">person</i></a>
+      <a href="#name"><span class="white-text name">{{ user.username }}</span></a>
+      <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
+    </div></li>
+
+    {% render_search_form request %}
+
+    <li><div class="divider"></div></li>
+
+    <li><a class="subheader">Menu</a></li>
+      <li><a href="#MyDiary">MyDiary</a></li>
+      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+      <li><a href="#Recommend">Recommend</a></li>
+  </ul>
+<ul id="dropdown1" class="dropdown-content">
+  {% render_category_links %}
+</ul>
+
+{% for field, errors in form.errors.items %}
+    <article class="message is-warning">
+        <div class="message-body">
+        {% for error in errors %}
+            <p><strong>{{ error }}</strong></p>
+        {% endfor %}
+        </div>
+    </article>
+{% endfor %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="page-footer blue">
+  <div class="footer-copyright">
+    <div class="container center">
+    Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+    </div>
+  </div>
+</footer>
+
+<!--JavaScript at end of body for optimized loading-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="{% static 'materialize/js/materialize.min.js' %}"></script>
+<script src="{% static 'materialize/js/init.js' %}"></script>
+<script src="{% static 'diary/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends 'diary/base.html' %}
+{% load diary %}
+
+{% block meta_title %}{{ diary.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <section id="diary-detail" class="container">
+        <div class="col s12">
+        <article class="diary">
+            <h1 class="center", "diary-title">{{ diary.title }}</h1>
+            <div class="meta">
+              <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
+              <h6 class="center light-blue-text">{{ diary.category }}</h6>
+            </div>
+            <div class="contents center">
+                {{ diary.text | linebreaks | urlize2 }}
+            </div>
+        </article>
+        </div>
+        <div class="center">
+          <a class="waves-effect waves-light btn" href="{% get_return_link request %}">Back</a>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "diary/base.html" %}
+{% load diary %}
+
+{% block meta_title %}{{ heading }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<section id="diary-list" class="container">
+  <div class="row">
+    {% for diary in object_list %}
+      <div class="col s12">
+        <a href="{% url 'diary:detail' diary.pk %}">
+        <div class="card-panel hoverable grey-text text-darken-4">
+          <div class="icon-block">
+            <h5 class="center">{{ diary.title }}</h5>
+            <h6 class="center light-blue-text">{{ diary.category }}</h6>
+            <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
+            <p class="contents center">
+              {{ diary.text | truncatechars:100 }}
+            </p>
+          </div>
+        </div>
+        </a>
+      </div>
+
+    {% empty %}
+        <p>記事が見つかりませんでした。</p>
+    {% endfor %}
+  </div>
+  <br><br>
+
+  <ul id="page" class="pagination center">
+    <!-- 1つ前 の部分 -->
+    {% if page_obj.has_previous %}
+    <li class="waves-effect"><a id="prev" href="?{% url_replace request 'page' page_obj.previous_page_number %}"
+                 title="前ページへ"><i class="material-icons">chevron_left</i></a></li>
+    {% endif %}
+      <span id="page-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+    <!-- 1つ後 の部分 -->
+    {% if page_obj.has_next %}
+      <li class="waves-effect"><a id="next" href="?{% url_replace request 'page' page_obj.next_page_number %}" title="次ページへ"><i class="material-icons">chevron_right</i></a></li>
+    {% endif %}
+  </ul>
+
+</section>
+
+{% endblock %}

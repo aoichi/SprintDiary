@@ -1,0 +1,37 @@
+{% extends 'diary/simple_base.html' %}
+
+{% block title %}Login | {% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="subtitle is-6 center">Login</h2>
+        <hr>
+        <p class="help center">アカウントをお持ちでない方へ：サインアップは<a href="{% url 'diary:signup' %}">こちら</a></p>
+        <br>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label">ユーザーネーム</label>
+                <div class="control has-icons-left">
+                    {{ form.username }}
+                    <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">パスワード</label>
+                <div class="control has-icons-left">
+                    {{ form.password }}
+                    <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                </div>
+            </div>
+            <div class="field">
+                <p class="control">
+                    <input type="submit" value="ログイン" class="button is-success">
+                    <input type="hidden" name="next" value="{{ next }}" >
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

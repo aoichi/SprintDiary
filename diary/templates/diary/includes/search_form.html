@@ -1,0 +1,8 @@
+<form action="{% url 'diary:search' %}" method="GET">
+  <div class="input-field">
+    <div class="container">
+      {{ search_form.key_word }}
+    </div>
+      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+  </div>
+</form>
