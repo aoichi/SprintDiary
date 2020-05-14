@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Diary, Category
+from .models import Diary, Category, Writer
 from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -13,6 +13,7 @@ from .models import (
 
 admin.site.register(Diary)
 admin.site.register(Category)
+admin.site.register(Writer)
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required

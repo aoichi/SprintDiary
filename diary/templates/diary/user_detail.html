@@ -19,8 +19,8 @@
                     <h2 class="subtitle">
                         {{ user.username }}
                     </h2>
-                    {% if user.pk == request.user.pk %}
-                    <a href="{% url 'diary:user_update' user.pk %}">
+                    {% if user == request.user %}
+                    <a href="{% url 'diary:user_update'%}">
                         <button class="button is-small is-info is-inverted is-outlined">
                             <span class="icon is-small is-left"><i class="fas fa-user-edit"></i></span>
                             <strong>プロフィールを追加する</strong>

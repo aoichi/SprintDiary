@@ -16,18 +16,20 @@ from .forms import (
     LoginForm, UserCreateForm, UserUpdateForm,
 )
 from django.views import generic
-from .models import Diary, Category
+from .models import Diary, Category, Writer
 from django.utils import timezone
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, resolve_url
 from django.db.models import Q
 from .forms import DiarySearchForm
 from django.views.generic.detail import DetailView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 UserModel = get_user_model()
 
-class TopView(TemplateView):
+class TopView(LoginRequiredMixin, TemplateView):
     template_name = 'diary/top.html'
 
 class Login(LoginView):
@@ -48,22 +50,23 @@ class UserCreate(CreateView):
         self.object = user
         return HttpResponseRedirect(self.get_success_url())
 
-class UserUpdate(OnlyYouMixin, UpdateView):
+@method_decorator(login_required, name='dispatch')
+class UserUpdate(UpdateView):
     model = UserModel
-    form_class = UserUpdateForm
+    #form_class = UserUpdateForm
+    fields = ('username', 'first_name', 'last_name', 'email')
     template_name = 'diary/user_update.html'
+    success_url = reverse_lazy('diary:user_detail')
 
-    def get_success_url(self):
-        return resolve_url('diary:user_detail', pk=self.kwargs['pk'])
+    def get_object(self):
+        return self.request.user
 
-class UserDetail(OnlyYouMixin, DetailView):
-    model = UserModel
+@method_decorator(login_required, name='dispatch')
+class UserDetail(TemplateView):
+    #model = UserModel
     template_name = 'diary/user_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['pk'] = self.kwargs['pk']
-        return context
+    def get_queryset(self):
+        return User.objects.get(user=self.request.user)
 
 class UserDelete(OnlyYouMixin, DeleteView):
     model = UserModel
@@ -81,11 +84,10 @@ class ArchiveListMixin:
 
 
 class DiaryList(ArchiveListMixin, generic.ArchiveIndexView):
-    #OnlyYouMixinの継承予定, 
-    #model = UserModel
 
     def get_queryset(self):
-        return super().get_queryset().select_related('category')
+        result = super().get_queryset().select_related('category')
+        return result.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

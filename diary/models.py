@@ -122,10 +122,18 @@ class DiaryQuerySet(models.QuerySet):
         return self.filter(created_at__lte=timezone.now())
 
 
+class Writer(models.Model):
+    name = models.CharField('Writer', max_length=255)
+
+    def __str__(self):
+
+        return self.name
+
 class Diary(models.Model):
     title = models.CharField('Title', max_length=32)
     text = models.TextField('Contents')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Category')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name='user')
     created_at = models.DateTimeField('Date', default=timezone.now)
     objects = DiaryQuerySet.as_manager()
 
