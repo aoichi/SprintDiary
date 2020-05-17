@@ -145,7 +145,7 @@ def urlize2(value, autoescape=True):
 
 @register.simple_tag
 def get_return_link(request):
-    top_page = resolve_url('diary:list')
+    top_page = resolve_url('diary:diary')
     referer = request.environ.get('HTTP_REFERER')
     # URL直接入力やお気に入りアクセスのときはリファラがないので、トップぺージに戻す
     if referer:

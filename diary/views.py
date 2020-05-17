@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.contrib.auth import get_user_model, login
@@ -13,7 +13,7 @@ from django.views.generic.edit import (
 )
 from .mixins import OnlyYouMixin
 from .forms import (
-    LoginForm, UserCreateForm, UserUpdateForm,
+    LoginForm, UserCreateForm, UserUpdateForm, DiaryCreateForm
 )
 from django.views import generic
 from .models import Diary, Category, Writer
@@ -73,6 +73,58 @@ class UserDelete(OnlyYouMixin, DeleteView):
     template_name = 'diary/user_delete.html'
     success_url = reverse_lazy('diary:top')
 
+"""
+@login_required
+def PostCreate(request):
+    diary = Diary()
+    diary.user = request.user
+    if request.method == "POST":
+        form = DiaryCreateForm(request.POST, instance=diary)
+        if form.is_valid():
+            diary = form.save(commit=False)
+            diary.user = request.user
+            diary.save()
+        else:
+            return render(request, 'diary/create.html', {'form': form})
+    else:
+        form = DiaryCreateForm(instance=diary)
+    return render(request, 'diary/create.html', {'form': form})
+"""
+"""
+@login_required
+def PostCreate(request):
+    template_name = 'diary/create.html'
+    ctx = {}
+    if request.method == 'GET':
+        form = DiaryCreateForm()
+        ctx['form'] = form
+        return render(request, template_name, ctx)
+
+    if request.method == 'POST':
+        diary_form = DiaryCreateForm(request.POST)
+        if diary_form.is_valid():
+            diary = Diary()
+            cleaned_data = diary_form.cleaned_data
+            diary.title = cleaned_data['title']
+            diary.text = cleaned_data['text']
+            diary.user = request.user
+            diary.category = cleaned_data['category']
+            diary.save()
+            return redirect(reverse_lazy('diary:diary'))
+        else:
+            ctx['form'] = diary_form
+            return render(request, template_name, ctx)
+"""
+
+class PostCreate(generic.CreateView):
+    template_name = 'diary/create.html'
+    model = Diary
+    form_class = DiaryCreateForm
+    success_url = reverse_lazy('diary:diary')
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user.id
+        return super(PostCreate, self).form_valid(form)
 
 class ArchiveListMixin:
     model = Diary
@@ -108,7 +160,7 @@ class DiaryCategoryList(ArchiveListMixin, generic.ArchiveIndexView):
 
     def get_queryset(self):
         self.category = category = get_object_or_404(Category, pk=self.kwargs['pk'])
-        return super().get_queryset().filter(category=category).select_related('category')
+        return super().get_queryset().filter(category=category, user=self.request.user).select_related('category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,7 +170,7 @@ class DiaryCategoryList(ArchiveListMixin, generic.ArchiveIndexView):
 class DiarySearchList(ArchiveListMixin, generic.ArchiveIndexView):
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(user=self.request.user)
         self.request.form = form = DiarySearchForm(self.request.GET)
         form.is_valid()
         self.key_word = key_word = form.cleaned_data['key_word']
