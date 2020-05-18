@@ -128,7 +128,7 @@ class PostCreate(generic.CreateView):
 
 class ArchiveListMixin:
     model = Diary
-    paginate_by = 12
+    paginate_by = 5
     date_field = 'created_at'
     template_name = 'diary/mydiary.html'
     allow_empty = True
@@ -168,6 +168,65 @@ class DiaryCategoryList(ArchiveListMixin, generic.ArchiveIndexView):
         return context
 
 class DiarySearchList(ArchiveListMixin, generic.ArchiveIndexView):
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(user=self.request.user)
+        self.request.form = form = DiarySearchForm(self.request.GET)
+        form.is_valid()
+        self.key_word = key_word = form.cleaned_data['key_word']
+        if key_word:
+            queryset = queryset.filter(Q(title__icontains=key_word) | Q(text__icontains=key_word))
+        return queryset.select_related('category')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading'] = '「{}」 の検索結果'.format(self.key_word)
+        return context
+
+class RecommendListMixin:
+    model = Diary
+    paginate_by = 5
+    date_field = 'created_at'
+    template_name = 'diary/recommend.html'
+    allow_empty = True
+    make_object_list = True
+
+class RecommendList(RecommendListMixin, generic.ArchiveIndexView):
+
+    def get_queryset(self):
+        result = super().get_queryset().select_related('category')
+        user_diary = result.filter(user=self.request.user)
+        other_diary = result.exclude(user=self.request.user)
+
+        category_list = []
+
+        for data in other_diary:
+            category_list.append(data.category)
+        category_list = list(set(category_list))
+
+        for c in category_list:
+            recommend_list = other_diary.filter(category=c)
+
+        return recommend_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading'] = 'Latest diary'
+        #context['pk'] = self.kwargs['pk']
+        return context
+
+class RecommendCategoryList(RecommendListMixin, generic.ArchiveIndexView):
+
+    def get_queryset(self):
+        self.category = category = get_object_or_404(Category, pk=self.kwargs['pk'])
+        return super().get_queryset().filter(category=category, user=self.request.user).select_related('category')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['heading'] = '「{}」 Category Diary'.format(self.category.name)
+        return context
+
+class RecommendSearchList(RecommendListMixin, generic.ArchiveIndexView):
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(user=self.request.user)

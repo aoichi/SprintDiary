@@ -44,9 +44,9 @@
     <li><div class="user-view">
       <div class="background blue">
       </div>
-      <a href="#user"><i class="material-icons white">person</i></a>
-      <a href="#name"><span class="white-text name">{{ user.username }}</span></a>
-      <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
+      <a href="{% url 'diary:user_detail' %}"><i class="material-icons white">person</i></a>
+      <a href="{% url 'diary:user_detail' %}"><span class="white-text name">{{ user.username }}</span></a>
+      <a href="{% url 'diary:user_detail' %}"><span class="white-text email">{{ user.email }}</span></a>
     </div></li>
 
     {% render_search_form request %}
@@ -54,9 +54,9 @@
     <li><div class="divider"></div></li>
 
     <li><a class="subheader">Menu</a></li>
-      <li><a href="#MyDiary">MyDiary</a></li>
+      <li><a href="{% url 'diary:diary' %}">MyDiary</a></li>
       <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a href="#Recommend">Recommend</a></li>
+      <li><a href="{% url 'diary:recommend' %}">Recommend</a></li>
   </ul>
 <ul id="dropdown1" class="dropdown-content">
   {% render_category_links %}
