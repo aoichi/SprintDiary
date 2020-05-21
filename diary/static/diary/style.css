@@ -22,3 +22,7 @@ body {
 main {
   flex: 1 0 auto;
 }
+
+.pagination li.active a{
+  background-color: #2196f3!important;
+}
