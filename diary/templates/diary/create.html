@@ -10,9 +10,29 @@
         <hr>
         <br>
         <form action="" method="POST">
-            {{ form.as_p }}
-            {% csrf_token %}
-            <button type="submit">投稿</button>
+          {% csrf_token %}
+          <div class="field">
+              <label class="label">Title</label>
+              <div class="control has-icons-left">
+                  {{ form.title }}
+                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+              </div>
+          </div>
+          <div class="field">
+              <label class="label">Contents</label>
+              <div class="control has-icons-left">
+                  {{ form.text }}
+                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+              </div>
+          </div>
+          <div class="field">
+              <label class="label">Category</label>
+              <div class="control has-icons-left">
+                  {{ form.category }}
+                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+              </div>
+          </div>
+          <button class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right">send</i></button>
         </form>
     </div>
 </section>

@@ -5,42 +5,60 @@
 
 {% block content %}
 <section id="diary-list" class="container">
-  <div class="row">
-    {% for diary in object_list %}
-      <div class="col s12">
-        <a href="{% url 'diary:recommend_detail' diary.pk %}">
-        <div class="card-panel hoverable grey-text text-darken-4">
-          <div class="icon-block">
-            <h5 class="center">{{ diary.title }}</h5>
-            <h6 class="center light-blue-text">{{ diary.category }}</h6>
-            <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
-            <p class="contents center">
-              {{ diary.text | truncatechars:100 }}
-            </p>
-          </div>
-        </div>
-        </a>
+  {% for diary in object_list %}
+  <ul class="collapsible expandable popout">
+    <li>
+      <div class="collapsible-header">{{ diary.title }}</div>
+      <div class="collapsible-body white grey-text text-darken-4">
+        <!--<a href="{% url 'diary:detail' diary.pk %}"> -->
+        <h6 class="center">{{ diary.category }}</h6>
+        <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
+        <p class="contents center">
+          {{ diary.text | truncatechars:100 }}
+        </p>
+        <!--</a>-->
       </div>
+    </li>
+    </ul>
+  {% empty %}
 
-    {% empty %}
-        <p>記事が見つかりませんでした。</p>
-    {% endfor %}
-  </div>
+    <p>記事が見つかりませんでした。</p>
+
+  {% endfor %}
   <br><br>
 
-  <ul id="page" class="pagination center">
-    <!-- 1つ前 の部分 -->
+  <ul class="pagination center">
+    <!-- 前へ の部分 -->
     {% if page_obj.has_previous %}
-    <li class="waves-effect"><a id="prev" href="?{% url_replace request 'page' page_obj.previous_page_number %}"
-                 title="前ページへ"><i class="material-icons">chevron_left</i></a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                <span aria-hidden="true"><i class="material-icons">chevron_left</i></span>
+            </a>
+        </li>
+    {% else %}
+        <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
     {% endif %}
-      <span id="page-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
-    <!-- 1つ後 の部分 -->
+    <!-- 数字の部分 -->
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
+        {% else %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    <!-- 次へ の部分 -->
     {% if page_obj.has_next %}
-      <li class="waves-effect"><a id="next" href="?{% url_replace request 'page' page_obj.next_page_number %}" title="次ページへ"><i class="material-icons">chevron_right</i></a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    {% else %}
+        <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
     {% endif %}
-  </ul>
+</ul>
 
 </section>
 

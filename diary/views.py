@@ -128,7 +128,7 @@ class PostCreate(generic.CreateView):
 
 class ArchiveListMixin:
     model = Diary
-    paginate_by = 5
+    paginate_by = 10
     date_field = 'created_at'
     template_name = 'diary/mydiary.html'
     allow_empty = True

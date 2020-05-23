@@ -93,3 +93,5 @@ class DiaryCreateForm(forms.ModelForm):
         queryset=Category.objects,
         #required=False
     )
+    text = forms.CharField(
+                widget=forms.TextInput(attrs={'class':'materialize-textarea'}))
