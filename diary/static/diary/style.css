@@ -67,3 +67,21 @@ main {
     padding: 2rem;
     border-bottom: None;
 }
+
+.collapsible-header {
+  justify-content: space-between;
+}
+
+.post-category {
+    height: 40px;
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    padding: 12px 40px 0;
+    background-color: #5bc0de;
+    letter-spacing: 0.15em;
+    font-size: 13px;
+    font-weight: bold;
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}

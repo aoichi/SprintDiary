@@ -8,14 +8,17 @@
   {% for diary in object_list %}
   <ul class="collapsible expandable popout">
     <li>
-      <div class="collapsible-header">{{ diary.title }}</div>
+      <div class="collapsible-header">
+        {{ diary.title }}
+        <time class = "right" datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time>
+      </div>
       <div class="collapsible-body grey-text text-darken-4">
         <!--<a href="{% url 'diary:detail' diary.pk %}"> -->
-        <h6 class="center">{{ diary.category }}</h6>
-        <h6 class="center"><time datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time></h6>
-        <p class="contents center">
+        <div class="tag">{{ diary.category }}</div>
+        <br>
+        <div class="contents">
           {{ diary.text | truncatechars:100 }}
-        </p>
+        </div>
         <!--</a>-->
       </div>
     </li>
