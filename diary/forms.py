@@ -94,4 +94,4 @@ class DiaryCreateForm(forms.ModelForm):
         #required=False
     )
     text = forms.CharField(
-                widget=forms.TextInput(attrs={'class':'materialize-textarea'}))
+                widget=forms.Textarea(attrs={'class':'bulmatextarea'}))

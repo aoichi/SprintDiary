@@ -4,15 +4,16 @@
 {% block meta_title %}{{ heading }} - {{ block.super }}{% endblock %}
 
 {% block content %}
+<br><br>
 <section id="diary-list" class="container">
   {% for diary in object_list %}
   <ul class="collapsible expandable popout">
     <li>
       <div class="collapsible-header">
         {{ diary.title }}
-        <time class = "right" datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time>
+        <time class = "right grey-text text-darken-1" datetime="{{ diary.created_at | date:'Y-m-d' }}">{{ diary.created_at | date:'Y/n/j' }}</time>
       </div>
-      <div class="collapsible-body grey-text text-darken-4">
+      <div class="collapsible-body">
         <!--<a href="{% url 'diary:detail' diary.pk %}"> -->
         <div class="tag">{{ diary.category }}</div>
         <br>

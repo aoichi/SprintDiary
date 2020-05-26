@@ -1,38 +1,45 @@
-{% extends 'diary/simple_base.html' %}
+{% extends 'diary/base.html' %}
 
 {% block title %}Post | {% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container is-mobile">
-        <h1 class="title is-4">投稿</h1>
-        <h2 class="subtitle is-6">Post</h2>
-        <hr>
+        <h2 class="subtitle is-6 maincolor">Post</h2>
         <br>
         <form action="" method="POST">
           {% csrf_token %}
-          <div class="field">
-              <label class="label">Title</label>
-              <div class="control has-icons-left">
-                  {{ form.title }}
-                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+          <div class="row">
+            <div class="col s8">
+              <div class="field">
+                  <label class="label">Title</label>
+                  <div class="control has-icons-left">
+                      {{ form.title }}
+                      <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                  </div>
               </div>
-          </div>
-          <div class="field">
-              <label class="label">Contents</label>
-              <div class="control has-icons-left">
-                  {{ form.text }}
-                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
+            <div class="col s4">
+              <div class="field">
+                  <label class="label">Category</label>
+                  <div class="control has-icons-left">
+                      {{ form.category }}
+                      <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                  </div>
               </div>
-          </div>
-          <div class="field">
-              <label class="label">Category</label>
-              <div class="control has-icons-left">
-                  {{ form.category }}
-                  <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
+            <div class="col s12">
+              <div class="field">
+                  <label class="label">Contents</label>
+                  <div class="control has-icons-left">
+                      {{ form.text }}
+                      <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+                  </div>
               </div>
+            </div>
           </div>
-          <button class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right">send</i></button>
+          <br>
+          <button class="waves-effect waves-teal btn-flat btncolor white-text" type="submit">Submit</button>
         </form>
     </div>
 </section>
