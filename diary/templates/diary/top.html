@@ -1,27 +1,38 @@
-{% extends "diary/simple_base.html" %}
+{% extends "diary/top_base.html" %}
 {% load diary %}
 
 {% block meta_title %}{{ heading }} - {{ block.super }}{% endblock %}
 
 {% block content %}
-<div class="section no-pad-bot" id="index-banner">
-  <div class="container">
-    <br><br>
-    <h1 class="header center">ようこそ</h1>
-    <div class="row center">
-      <h5 class="header col s12 light">日記を共有しましょう</h5>
+<div class="wrapper">
+  <div class="column page1">
+      <div class="position-absolute">
+          <div class="p-t-b-15" style="margin-top: 70px;">
+            <i class="material-icons white-text">create</i><span class="white-text" style="margin-left: 20px;font-size: 20px;">日記を書きましょう。</span>
+          </div>
+          <div class="p-t-b-15">
+            <i class="material-icons white-text">group</i><span class="white-text" style="margin-left: 20px;font-size: 20px;">他の人の生活を参考にしましょう。</span>
+          </div>
+          <div class="p-t-b-15">
+            <i class="material-icons white-text">trending_up</i><span class="white-text" style="margin-left: 20px;font-size: 20px;">あなたの生活を向上させましょう。</span>
+          </div>
+      </div>
     </div>
-    <div class="row center">
-      <h6 class="header col s12 light">アカウントをお持ちでない方へ</h6>
-      <a href="{% url 'diary:signup' %}" id="download-button" class="btn-large waves-effect waves-light blue">Sign up</a>
+  <div class="column page2">
+    <div class="container">
+      <div style="margin-top: 50%;">
+        <div class="p-t-b-15">
+          <span class="maincolor center" style="font-size: 35px;display: grid;">日記を共有しましょう</span>
+        </div>
+        <br>
+        <div class="row center">
+          <a href="{% url 'diary:signup' %}" id="download-button" class="waves-effect waves-teal btn-flat btncolor white-text" style="width: 200px;">Sign up</a>
+        </div>
+        <div class="row center">
+          <a href="{% url 'diary:login' %}" id="download-button" class="waves-effect waves-teal btn-flat btncolor white-text" style="width: 200px;">Log in</a>
+        </div>
+      </div>
     </div>
-    <div class="row center">
-      <h6 class="header col s12 light">既にアカウントをお持ちの方へ</h6>
-      <a href="{% url 'diary:login' %}" id="download-button" class="btn-large waves-effect waves-light blue">Log in</a>
-    </div>
-    <br><br>
-
   </div>
 </div>
-
 {% endblock %}

@@ -15,7 +15,7 @@
       </div>
       <div class="collapsible-body">
         <!--<a href="{% url 'diary:detail' diary.pk %}"> -->
-        <div class="tag">{{ diary.category }}</div>
+        <div class="tag maincolor">{{ diary.category }}</div>
         <br>
         <div class="contents">
           {{ diary.text | truncatechars:100 }}
