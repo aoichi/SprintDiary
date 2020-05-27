@@ -72,6 +72,13 @@
     </article>
 {% endfor %}
 
+<div class="fixed-action-btn hide-on-large-only">
+  <a class="btn-floating btn-large" href="{% url 'diary:post' %}">
+    <i class="large material-icons btncolor">mode_edit</i>
+  </a>
+</div>
+
+
 <main>
   {% block content %}{% endblock %}
 </main>
